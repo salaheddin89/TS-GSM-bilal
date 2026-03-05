@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المدونة والدورات | TS-GSM TECHNOLOGIE CENTRE DZ PRO</title>
+    
+    <!-- خطوط جوجل العربية -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- أيقونات FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS (مكتبة التصميم) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Cairo', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0f172a',
+                            primary: '#2563eb',
+                            secondary: '#38bdf8',
+                            accent: '#f59e0b',
+                        }
+                    } 
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #f8fafc; scroll-behavior: smooth; }
+        .card-hover { transition: all 0.3s ease; cursor: pointer; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+        .filter-btn.active { background-color: #2563eb; color: white; border-color: #2563eb; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        
+        /* Modal Animation */
+        .modal-animate { transition: opacity 0.3s ease, transform 0.3s ease; }
+        .thumbnail-active { border-color: #2563eb; opacity: 1; transform: scale(1.05); }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="font-sans text-slate-800 antialiased selection:bg-brand-secondary selection:text-white">
+
+    <!-- شريط التنقل -->
+    <header class="bg-brand-dark text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-brand-dark font-bold text-xl border-2 border-brand-accent">TS</div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-wider">TS-GSM TECHNOLOGIE</h1>
+                    <p class="text-xs text-brand-secondary">CENTRE DZ PRO</p>
+                </div>
+            </div>
+            <nav class="hidden md:flex gap-6 font-semibold">
+                <a href="https://ts-gsm.dz/" class="hover:text-brand-secondary transition">الرئيسية</a>
+                <a href="https://inscription.ts-gsm.dz/" class="hover:text-brand-secondary transition">الدورات</a>
+                <a href="#" class="text-brand-accent border-b-2 border-brand-accent pb-1">المدونة</a>
+                <a href="https://ts-gsm-2.vercel.app/" class="hover:text-brand-secondary transition">اتصل بنا</a>
+            </nav>
+            <button class="md:hidden text-2xl"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative bg-brand-dark text-white py-20 text-center">
+        <div class="container mx-auto px-4 relative z-10">
+            <h2 class="text-4xl md:text-5xl font-extrabold mb-6">مدونة <span class="text-brand-accent">TS-GSM</span> التعليمية</h2>
+            <p class="text-lg text-slate-300 max-w-2xl mx-auto mb-8">احتراف صيانة الهواتف، الإعلام الآلي، والذكاء الاصطناعي.</p>
+            <div class="flex items-center justify-center gap-4 text-slate-400 font-medium">
+                <img src="https://ui-avatars.com/api/?name=Salah+Eddine&background=0D8ABC&color=fff" alt="أستاذ صلاح الدين" class="w-10 h-10 rounded-full border-2 border-brand-accent">
+                <span>بإشراف الخبير: <strong class="text-white">صلاح الدين بن لخضر</strong></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-16">
+        <div class="flex flex-wrap justify-center gap-3 mb-12" id="filter-container">
+            <button class="filter-btn active px-6 py-2 rounded-full border-2 border-slate-200 font-bold" data-filter="all">الكل</button>
+            <button class="filter-btn px-6 py-2 rounded-full border-2 border-slate-200 font-bold" data-filter="hardware_mobile">HARDWARE MOBILE</button>
+            <button class="filter-btn px-6 py-2 rounded-full border-2 border-slate-200 font-bold" data-filter="software_mobile">SOFTWARE MOBILE</button>
+            <button class="filter-btn px-6 py-2 rounded-full border-2 border-slate-200 font-bold" data-filter="it">الإعلام الآلي</button>
+            <button class="filter-btn px-6 py-2 rounded-full border-2 border-slate-200 font-bold" data-filter="ai">الذكاء الاصطناعي</button>
+        </div>
+
+        <div id="blog-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+
+        <div id="no-results" class="hidden text-center py-12">
+            <i class="fas fa-search text-5xl text-slate-300 mb-4"></i>
+            <h3 class="text-2xl font-bold text-slate-600">لا توجد مقالات مفعمة بالصور حالياً.</h3>
+        </div>
+    </main>
+
+    <!-- Gallery Modal -->
+    <div id="gallery-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/95 backdrop-blur-sm p-4 md:p-8">
+        <button onclick="closeGallery()" class="absolute top-6 right-6 text-white text-3xl hover:text-brand-accent transition z-50">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <div class="w-full max-w-6xl h-full flex flex-col items-center justify-center gap-6">
+            <div class="relative group w-full flex-grow flex items-center justify-center overflow-hidden">
+                <button onclick="prevGalleryImage()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white p-4 rounded-full transition hidden md:block">
+                    <i class="fas fa-chevron-left text-2xl"></i>
+                </button>
+                
+                <img id="main-gallery-img" src="" class="max-w-full max-h-[70vh] object-contain shadow-2xl rounded-lg modal-animate" alt="معاينة">
+                
+                <button onclick="nextGalleryImage()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white p-4 rounded-full transition hidden md:block">
+                    <i class="fas fa-chevron-right text-2xl"></i>
+                </button>
+            </div>
+
+            <div class="text-center text-white space-y-2">
+                <h2 id="gallery-title" class="text-2xl font-bold"></h2>
+                <p id="gallery-counter" class="text-slate-400 text-sm font-bold tracking-widest"></p>
+            </div>
+
+            <div id="thumbnails-container" class="flex gap-3 overflow-x-auto p-2 w-full max-w-4xl scrollbar-hide justify-center"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-10 border-t-4 border-brand-accent">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-right">
+            <div>
+                <h3 class="text-white text-xl font-bold mb-4">TS-GSM CENTRE DZ PRO</h3>
+                <p class="text-sm">المركز الأول لاحتراف صيانة الهواتف الذكية وتكنولوجيا المعلومات بالجزائر.</p>
+            </div>
+            <div>
+                <h3 class="text-white text-xl font-bold mb-4">روابط سريعة</h3>
+                <ul class="space-y-2">
+                    <li><a href="https://inscription.ts-gsm.dz/" class="hover:text-brand-secondary">الدورات المتاحة</a></li>
+                    <li><a href="https://ts-gsm.dz/TS-GSM%20SCHOOL/register.php" class="hover:text-brand-secondary transition">سجل الان</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-white text-xl font-bold mb-4">تواصل معنا</h3>
+                <ul class="space-y-2">
+                    <li>الأستاذ صلاح الدين بن لخضر</li>
+                    <li dir="ltr" class="text-right text-brand-secondary font-bold tracking-widest">00213797099620</li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const DEBUG_MODE = false; 
+        let currentGalleryImages = [];
+        let currentImageIndex = 0;
+
+        /**
+         * دالة ذكية لتوليد مصفوفة أسماء الصور تلقائياً حتى 100
+         */
+        const generateImageNames = (prefix, count) => {
+            return Array.from({ length: count }, (_, i) => `${prefix}${i + 1}.jpg`);
+        };
+
+        function getSmartImagePath(category, imageName) {
+            if (imageName.startsWith('http')) return imageName;
+            const folders = {
+                'hardware_mobile': 'HARDWARE',
+                'software_mobile': 'SOFTWARE',
+                'ai': 'AI',
+                'it': 'IT'
+            };
+            const folderName = folders[category] || 'OTHER';
+            return `${folderName}/${imageName}`;
+        }
+
+        // تم تحديث المصفوفات لتدعم حتى 100 صورة لكل قسم
+        const postsData = [
+            {
+                id: 1,
+                title: "دورة صيانة الهواتف (HARDWARE MOBILE)",
+                category: "hardware_mobile",
+                categoryLabel: "HARDWARE MOBILE",
+                categoryColor: "bg-red-100 text-red-700",
+                images: generateImageNames('HD', 100), 
+                date: "15 مارس 2026",
+                excerpt: "تعلم تتبع المسارات الدقيقة والمخططات باحترافية.",
+                author: "صلاح الدين بن لخضر"
+            },
+            {
+                id: 2,
+                title: "دورة تفليش وبرمجة الهواتف (SOFTWARE MOBILE)",
+                category: "software_mobile",
+                categoryLabel: "SOFTWARE MOBILE",
+                categoryColor: "bg-blue-100 text-blue-700",
+                images: generateImageNames('SW', 100),
+                date: "10 مارس 2026",
+                excerpt: "احتراف السوفت وير والبوكسات والدونجلات.",
+                author: "صلاح الدين بن لخضر"
+            },
+            {
+                id: 3,
+                title: "الذكاء الاصطناعي في الصيانة والتقنية",
+                category: "ai",
+                categoryLabel: "الذكاء الاصطناعي",
+                categoryColor: "bg-purple-100 text-purple-700",
+                images: generateImageNames('AI', 100),
+                date: "05 مارس 2026",
+                excerpt: "استخدام أدوات الذكاء الاصطناعي لتسريع تحليل الأعطال.",
+                author: "صلاح الدين بن لخضر"
+            },
+            {
+                id: 4,
+                title: "دورة الإعلام الآلي والشبكات (IT)",
+                category: "it",
+                categoryLabel: "الإعلام الآلي",
+                categoryColor: "bg-emerald-100 text-emerald-700",
+                images: generateImageNames('IT', 100),
+                date: "01 مارس 2026",
+                excerpt: "إدارة الشبكات المحلية وصيانة أجهزة الكمبيوتر.",
+                author: "صلاح الدين بن لخضر"
+            }
+        ];
+
+        const blogGrid = document.getElementById('blog-grid');
+        const sliderStates = {};
+        const autoSlideIntervals = {};
+
+        // نظام التنظيف الذكي (إخفاء الصور التي لا يجدها في المجلد)
+        window.handleImageError = function(imgElement, postId, originalIndex, attemptedPath) {
+            if (DEBUG_MODE) {
+                imgElement.onerror = null; 
+                imgElement.src = `https://placehold.co/800x600/fee2e2/991b1b?text=Not+Found:%0A${attemptedPath}`;
+                return;
+            }
+
+            const slideContainer = document.getElementById(`slide-${postId}-${originalIndex}`);
+            if (slideContainer) slideContainer.remove();
+
+            const track = document.getElementById(`slider-track-${postId}`);
+            if (!track) return;
+
+            const remainingSlides = track.children.length;
+            if (remainingSlides === 0) {
+                document.getElementById(`article-${postId}`)?.remove();
+                checkGridStatus();
+            } else if (remainingSlides === 1) {
+                stopAutoSlide(postId);
+                track.style.transform = `translateX(0%)`;
+                sliderStates[postId] = 0;
+            }
+        };
+
+        function checkGridStatus() {
+            if (blogGrid.children.length === 0) {
+                blogGrid.classList.add('hidden');
+                document.getElementById('no-results').classList.remove('hidden');
+            }
+        }
+
+        window.openGallery = function(postId) {
+            const track = document.getElementById(`slider-track-${postId}`);
+            const post = postsData.find(p => p.id === postId);
+            if (!track || !post) return;
+
+            const activeImages = Array.from(track.querySelectorAll('img')).map(img => img.src);
+            if (activeImages.length === 0) return;
+
+            currentGalleryImages = activeImages;
+            currentImageIndex = 0;
+            
+            document.getElementById('gallery-title').innerText = post.title;
+            updateGalleryUI();
+            
+            document.getElementById('gallery-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        };
+
+        window.closeGallery = function() {
+            document.getElementById('gallery-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        };
+
+        function updateGalleryUI() {
+            const mainImg = document.getElementById('main-gallery-img');
+            mainImg.style.opacity = '0';
+            
+            setTimeout(() => {
+                mainImg.src = currentGalleryImages[currentImageIndex];
+                mainImg.style.opacity = '1';
+                document.getElementById('gallery-counter').innerText = `${currentImageIndex + 1} / ${currentGalleryImages.length}`;
+            }, 200);
+
+            const thumbsContainer = document.getElementById('thumbnails-container');
+            thumbsContainer.innerHTML = currentGalleryImages.map((src, idx) => `
+                <img src="${src}" onclick="setGalleryImage(${idx})" 
+                     class="w-20 h-16 object-cover rounded-md cursor-pointer border-2 transition-all opacity-50 hover:opacity-100 ${idx === currentImageIndex ? 'thumbnail-active border-brand-primary' : 'border-transparent'}">
+            `).join('');
+        }
+
+        window.setGalleryImage = (idx) => { currentImageIndex = idx; updateGalleryUI(); };
+        window.nextGalleryImage = () => { currentImageIndex = (currentImageIndex + 1) % currentGalleryImages.length; updateGalleryUI(); };
+        window.prevGalleryImage = () => { currentImageIndex = (currentImageIndex - 1 + currentGalleryImages.length) % currentGalleryImages.length; updateGalleryUI(); };
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeGallery();
+            if (e.key === 'ArrowRight') nextGalleryImage();
+            if (e.key === 'ArrowLeft') prevGalleryImage();
+        });
+
+        function createPostCard(post) {
+            const slidesHTML = post.images.map((imgName, index) => {
+                const finalImageUrl = getSmartImagePath(post.category, imgName);
+                return `
+                    <div id="slide-${post.id}-${index}" class="w-full h-full flex-shrink-0 relative">
+                        <img src="${finalImageUrl}" alt="" onerror="handleImageError(this, ${post.id}, ${index}, '${finalImageUrl}')" class="w-full h-full object-cover">
+                    </div>`;
+            }).join('');
+
+            return `
+                <article id="article-${post.id}" onclick="openGallery(${post.id})" class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 card-hover flex flex-col h-full group">
+                    <div class="relative h-64 overflow-hidden bg-slate-200" onmouseenter="stopAutoSlide(${post.id})" onmouseleave="startAutoSlide(${post.id})">
+                        <div class="flex h-full w-full transition-transform duration-700" id="slider-track-${post.id}">${slidesHTML}</div>
+                        <div class="absolute top-4 right-4 ${post.categoryColor} px-3 py-1 rounded-full text-xs font-bold shadow-md z-20">${post.categoryLabel}</div>
+                        <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                             <span class="bg-white/90 text-brand-dark px-4 py-2 rounded-full font-bold text-sm shadow-lg">انقر للمعاينة <i class="fas fa-expand ml-1"></i></span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow text-right">
+                        <h3 class="text-xl font-bold text-brand-dark mb-3 line-clamp-2">${post.title}</h3>
+                        <p class="text-slate-600 text-sm mb-6 flex-grow leading-relaxed line-clamp-3">${post.excerpt}</p>
+                        <div class="pt-4 border-t border-slate-100 flex justify-between items-center">
+                            <span class="text-xs font-bold text-slate-500"><i class="fas fa-user-circle ml-1"></i> ${post.author}</span>
+                            <span class="text-brand-primary font-bold text-sm">عرض الصور <i class="fas fa-arrow-left text-xs mr-1"></i></span>
+                        </div>
+                    </div>
+                </article>`;
+        }
+
+        window.moveSlider = function(postId, direction) {
+            const track = document.getElementById(`slider-track-${postId}`);
+            if (!track || track.children.length <= 1) return;
+            let currentIndex = sliderStates[postId] || 0;
+            currentIndex = (currentIndex + direction + track.children.length) % track.children.length;
+            sliderStates[postId] = currentIndex;
+            track.style.transform = `translateX(${currentIndex * 100}%)`;
+        }
+
+        window.stopAutoSlide = (id) => clearInterval(autoSlideIntervals[id]);
+        window.startAutoSlide = (id) => {
+            stopAutoSlide(id);
+            const track = document.getElementById(`slider-track-${id}`);
+            if (track && track.children.length > 1) {
+                autoSlideIntervals[id] = setInterval(() => moveSlider(id, 1), 4000);
+            }
+        }
+
+        function displayPosts(filter = 'all') {
+            const filtered = filter === 'all' ? postsData : postsData.filter(p => p.category === filter);
+            blogGrid.innerHTML = filtered.map(p => createPostCard(p)).join('');
+            filtered.forEach(p => {
+                sliderStates[p.id] = 0;
+                startAutoSlide(p.id);
+            });
+            setTimeout(checkGridStatus, 500); // تأخير بسيط للتأكد من فحص الصور المكسورة
+        }
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                displayPosts(btn.dataset.filter);
+            });
+        });
+
+        displayPosts();
+    </script>
+</body>
+</html>
